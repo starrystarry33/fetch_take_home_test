@@ -76,7 +76,7 @@
 
 ## Data Quality Analysis
 
-### Key Findings
+### Overview
 
 1. **Users:**
    - **Duplicate Rows:** 283 rows were found to be duplicated, leading to potential inaccuracies in user-level analyses.
