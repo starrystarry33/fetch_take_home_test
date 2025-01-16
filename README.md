@@ -8,7 +8,7 @@
 * Q3. Identifying and analyzing data quality issues.
 * Q4. Communicating findings and technical reasoning in a business-friendly manner.
 
-### Files and Resources
+### Files
 
 1. **`ERD.png`**  
    The Entity Relationship Diagram showing the relationships between the following tables:
@@ -27,15 +27,16 @@
    * 6. Which brand has the most transactions among users who were created within the past 6 months?
 
 4. **`Q3_receipts.ipynb`**  
-   Jupyter Notebook for data cleaning, transformation, and exploratory analysis of the `Fact_Receipt` table
+   Jupyter Notebook for data quality checks and analysis of receipt data
 
 5. **`Q3_brands.ipynb`**  
-   Jupyter Notebook for analyzing brand-level data from `Dim_Brands` 
+   Jupyter Notebook for data quality checks and analysis of brand data
 
 6. **`Q3_users.ipynb`**  
-   Jupyter Notebook for exploring user data (`Dim_User`)
+   Jupyter Notebook for data quality checks and analysis of user data
      
 6.**`Communication.pdf`**
+    Email sent to stakeholder
 
 ---
 
@@ -44,7 +45,7 @@
 ### Tables and Relationships
 
 1. **`Dim_User`**  
-   Contains user-related metadata:  
+   Contains user-related ata:  
    - **Primary Key:** `user_id`  
    - Fields: `state`, `createdDate`, `lastLogin`, `role`, `active`  
 
@@ -62,7 +63,7 @@
    - Fields: `item_price`, `final_price`, `quantity`, etc.  
 
 4. **`Dim_Brands`**  
-   Metadata about brands:  
+   Contains brand-related ata:   
    - **Primary Key:** `brand_id`  
    - Fields: `name`, `category`, `brandCode`, etc.  
 
@@ -77,7 +78,7 @@
 
 ### Key Findings
 
-1. **Dim_User Table:**
+1. **Users:**
    - **Duplicate Rows:** 283 rows were found to be duplicated, leading to potential inaccuracies in user-level analyses.
    - **Missing Values:**
      - `signUpSource`: 48 missing values.
@@ -90,7 +91,7 @@
    - **State Distribution:** The majority of users are from Wisconsin (`WI`: 396), with smaller counts from other states.
    - **Invalid Timestamps:** No invalid timestamps were found where `last_login` is earlier than `created_date`.
 
-2. **Fact_Receipt Table:**
+2. **Receipt:**
    - **Duplicate Rows:** No duplicate rows were detected.
    - **Missing Values:**
      - Significant columns such as `bonusPointsEarned` (575), `pointsEarned` (510), and `totalSpent` (435) contain missing values, which could lead to incomplete metrics.
@@ -105,7 +106,7 @@
      - No invalid bonus points (`<0`) or total spent values (`<0`) were detected.
    - **Unique Receipt Statuses:** Includes `FINISHED`, `REJECTED`, `FLAGGED`, `SUBMITTED`, and `PENDING`.
 
-3. **Fact_Receipt_Items Table:**
+3. **Brands:**
    - **Duplicate Rows:** No duplicate rows were detected.
    - **Missing Values:**
      - `category`: 155 missing values.
@@ -124,22 +125,17 @@
      - Implement data validation checks at the ETL stage to ensure completeness.
 
 2. **Duplicate Data:**
-   - The `Dim_User` table contains 283 duplicate rows with non-unique IDs. Recommendations:
+   - The `User` file contains 283 duplicate rows with non-unique IDs. Recommendations:
      - Deduplicate the data by enforcing unique constraints on `user_id`.
      - Ensure proper logging and handling of duplicate user entries during ingestion.
 
 3. **Inconsistent Categories:**
-   - The `Fact_Receipt_Items` table has missing or inconsistent `category` and `categoryCode` values. Recommendations:
+   - The `Brands` file has missing or inconsistent `category` and `categoryCode` values. Recommendations:
      - Standardize these columns by mapping missing or incorrect values to predefined categories.
      - Maintain a reference table for valid categories and enforce checks during data loading.
 
 4. **Invalid Data:**
    - While no invalid data (e.g., negative values for `bonusPointsEarned` or `totalSpent`) was detected, this should be monitored continuously.
 
-5. **Scaling Concerns:**
-   - High volumes of incomplete or duplicated data can impact query performance. Recommended actions:
-     - Partition tables like `Fact_Receipt` and `Fact_Receipt_Items` by time (e.g., monthly) to optimize performance.
-     - Add indexes on frequently queried columns like `user_id`, `receipt_id`, and `brand_id`.
 
-By addressing these data quality issues, the overall reliability, and efficiency of the data model can be significantly improved.
 
