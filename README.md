@@ -10,12 +10,12 @@
 
 ### Files
 
-1. **`ERD.png`**  
+1. **`Q1_ERD.png`**  
    The Entity Relationship Diagram showing the relationships between the following tables:
-   - `Dim_User`: User-related data.
-   - `Fact_Receipt`: Receipts and associated details.
-   - `Fact_Receipt_Items`: Individual items within receipts.
-   - `Dim_Brands`: Brand information.
+   - `Users`: User-related data.
+   - `Receipt`: Receipts and associated details.
+   - `ReceiptItems`: Individual items within receipts.
+   - `Brands`: Brand information.
 
 2. **`Q2_SQL.sql`**  
    SQL query file addressing the following business question:
@@ -35,7 +35,7 @@
 6. **`Q3_users.ipynb`**  
    Jupyter Notebook for data quality checks and analysis of user data
      
-6.**`Communication.pdf`**
+6.**`Email.pdf`**
     Email sent to stakeholder
 
 ---
@@ -44,33 +44,34 @@
 
 ### Tables and Relationships
 
-1. **`Dim_User`**  
+1. **`Users`**  
    Contains user-related ata:  
    - **Primary Key:** `user_id`  
    - Fields: `state`, `createdDate`, `lastLogin`, `role`, `active`  
 
-2. **`Fact_Receipt`**  
+2. **`Receipt`**  
    Stores receipt-level data for transactions:  
    - **Primary Key:** `receipt_id`  
-   - Foreign Key: `user_id` (links to `Dim_User`)  
-   - Fields: `totalSpent`, `purchaseDate`, `pointsEarned`, etc.  
+   - Foreign Key: `user_id` (links to `Userw`)  
+   - Fields: `total_spent`, `purchase_date`, `points_earned`, etc.  
 
-3. **`Fact_Receipt_Items`**  
+3. **`ReceiptItems`**  
    Details of individual items in a receipt:  
    - **Primary Key:** `item_id`  
-   - Foreign Key: `receipt_id` (links to `Fact_Receipt`)  
-   - Foreign Key: `brand_id` (links to `Dim_Brands`)  
+   - Foreign Key: `receipt_id` (links to `Receipt`)  
+   - Foreign Key: `barcode` (links to `Brands`)  
    - Fields: `item_price`, `final_price`, `quantity`, etc.  
 
-4. **`Dim_Brands`**  
+4. **`Brands`**  
    Contains brand-related ata:   
-   - **Primary Key:** `brand_id`  
-   - Fields: `name`, `category`, `brandCode`, etc.  
+   - **Primary Key:** `brand_id`
+   - Unique Column:`barcode`
+   - Fields: `name`, `category`, etc.  
 
 ### Relationships
-- **`Dim_User` ↔ `Fact_Receipt`:** Each user can have multiple receipts.
-- **`Fact_Receipt` ↔ `Fact_Receipt_Items`:** Each receipt can have multiple items.
-- **`Fact_Receipt_Items` ↔ `Dim_Brands`:** Each item is associated with one brand.
+- **`User` ↔ `Receipt`:** Each user can have multiple receipts.
+- **`Receipt` ↔ `ReceiptItems`:** Each receipt can have multiple items.
+- **`ReceiptItems` ↔ `Brands`:** Each item is associated with one brand.
 
 ---
 
